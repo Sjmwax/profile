@@ -79,7 +79,13 @@ export const HomePage = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8, duration: 0.8 }}
             >
-              <button className="btn-primary">
+              <button 
+                className="btn-primary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
                 <i className="fas fa-arrow-down mr-2"></i>Explore My Work
               </button>
               {portfolio?.resume && (
@@ -123,6 +129,26 @@ export const HomePage = () => {
                     whileHover={{ scale: 1.1, rotate: 5 }}
                   >
                     <i className="fab fa-twitter text-xl"></i>
+                  </motion.div>
+                </a>
+              )}
+              {portfolio?.facebook && (
+                <a href={portfolio.facebook} target="_blank" rel="noopener noreferrer" className="group">
+                  <motion.div 
+                    className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-primary-600 transition-smooth"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                  >
+                    <i className="fab fa-facebook-f text-xl"></i>
+                  </motion.div>
+                </a>
+              )}
+              {portfolio?.whatsapp && (
+                <a href={portfolio.whatsapp} target="_blank" rel="noopener noreferrer" className="group">
+                  <motion.div 
+                    className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-primary-600 transition-smooth"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                  >
+                    <i className="fab fa-whatsapp text-xl"></i>
                   </motion.div>
                 </a>
               )}

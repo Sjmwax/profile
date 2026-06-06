@@ -19,6 +19,8 @@ class Portfolio(models.Model):
     github = models.URLField(blank=True)
     linkedin = models.URLField(blank=True)
     twitter = models.URLField(blank=True)
+    facebook = models.URLField(blank=True)
+    whatsapp = models.URLField(blank=True)
     personal_website = models.URLField(blank=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
