@@ -11,6 +11,19 @@ export const ContactPage = () => {
   });
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
+  const [portfolio, setPortfolio] = useState(null);
+
+  React.useEffect(() => {
+    const fetchPortfolio = async () => {
+      try {
+        const res = await portfolioAPI.getPortfolio();
+        setPortfolio(res.data[0] || {});
+      } catch (error) {
+        console.error('Error fetching portfolio:', error);
+      }
+    };
+    fetchPortfolio();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -150,19 +163,19 @@ export const ContactPage = () => {
             <div className="card">
               <i className="fas fa-envelope text-3xl text-primary-400 mb-4"></i>
               <h3 className="text-xl font-semibold mb-2">Email</h3>
-              <p className="text-gray-400">your.email@example.com</p>
+              <p className="text-gray-400">{portfolio?.email || 'your.email@example.com'}</p>
             </div>
 
             <div className="card">
               <i className="fas fa-phone text-3xl text-primary-400 mb-4"></i>
               <h3 className="text-xl font-semibold mb-2">Phone</h3>
-              <p className="text-gray-400">+1 (555) 123-4567</p>
+              <p className="text-gray-400">{portfolio?.phone || '+1 (555) 123-4567'}</p>
             </div>
 
             <div className="card">
               <i className="fas fa-map-marker-alt text-3xl text-primary-400 mb-4"></i>
               <h3 className="text-xl font-semibold mb-2">Location</h3>
-              <p className="text-gray-400">Your City, Country</p>
+              <p className="text-gray-400">{portfolio?.location || 'Your City, Country'}</p>
             </div>
           </motion.div>
         </div>

@@ -31,9 +31,15 @@ export const HomePage = () => {
     <div className="pt-20">
       {/* Hero Section */}
       <section id="home" className="min-h-screen flex items-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-600/10 to-transparent"></div>
+        {portfolio?.landing_background && (
+          <div 
+            className="absolute inset-0 bg-cover bg-center lg:bg-top z-0 opacity-40"
+            style={{ backgroundImage: `url(${portfolio.landing_background})` }}
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-600/10 to-transparent z-10"></div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-20 w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

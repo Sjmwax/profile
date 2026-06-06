@@ -12,6 +12,7 @@ class Portfolio(models.Model):
     phone = models.CharField(max_length=20, blank=True)
     location = models.CharField(max_length=200, blank=True)
     profile_image = models.ImageField(upload_to='profile/', blank=True, null=True)
+    landing_background = models.ImageField(upload_to='backgrounds/', blank=True, null=True, help_text="Background image for the landing page hero section")
     resume = models.FileField(upload_to='resume/', blank=True, null=True)
     
     # Social links

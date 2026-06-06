@@ -85,6 +85,9 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'portfolio', 'static'),
+]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/media/'
@@ -94,8 +97,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # REST Framework Configuration
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
     'DEFAULT_FILTER_BACKENDS': [
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
@@ -118,9 +119,10 @@ CORS_ALLOW_CREDENTIALS = True
 JAZZMIN_SETTINGS = {
     'site_title': 'Portfolio Admin',
     'site_header': 'Portfolio Management',
+    'custom_css': 'css/admin.css',
     'site_brand': 'Portfolio',
     'welcome_sign': 'Welcome to Portfolio Admin Panel',
-    'copyright': 'Portfolio © 2024',
+    'copyright': 'Portfolio',
     'search_model': 'auth.User',
     'user_avatar': None,
     'show_statistics': True,
@@ -139,4 +141,8 @@ JAZZMIN_SETTINGS = {
         'api.message': 'fas fa-envelope',
     },
     'order_with_respect_to': ['api', 'auth'],
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "footer_fixed": True,
 }

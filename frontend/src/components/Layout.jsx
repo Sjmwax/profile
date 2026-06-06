@@ -46,7 +46,7 @@ export const Footer = () => {
     <footer className="bg-dark-900 border-t border-white/10 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
-          <p className="text-gray-400">© 2024 Portfolio. All rights reserved.</p>
+          <p className="text-gray-400">&copy; {new Date().getFullYear()} Portfolio. All rights reserved.</p>
           <div className="flex gap-4">
             {[
               { icon: 'github', href: '#' },
