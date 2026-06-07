@@ -4,91 +4,128 @@ import { portfolioAPI } from '../services/api';
 import { SkillBar, ExperienceCard, EducationCard } from '../components/Cards';
 
 export const AboutPage = () => {
-  const [skills, setSkills] = useState([]);
+  const [skills,     setSkills]     = useState([]);
   const [experience, setExperience] = useState([]);
-  const [education, setEducation] = useState([]);
+  const [education,  setEducation]  = useState([]);
 
   useEffect(() => {
-    fetchData();
+    Promise.all([
+      portfolioAPI.getSkills(),
+      portfolioAPI.getExperience(),
+      portfolioAPI.getEducation(),
+    ])
+      .then(([skRes, expRes, eduRes]) => {
+        setSkills(skRes.data);
+        setExperience(expRes.data);
+        setEducation(eduRes.data);
+      })
+      .catch(() => {});
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const [skillsRes, expRes, eduRes] = await Promise.all([
-        portfolioAPI.getSkills(),
-        portfolioAPI.getExperience(),
-        portfolioAPI.getEducation()
-      ]);
-
-      setSkills(skillsRes.data);
-      setExperience(expRes.data);
-      setEducation(eduRes.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+  const skillSection = (label, category, iconClass, iconColor, iconBg) => (
+    <motion.div
+      initial={{ opacity: 0, y: 22 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+      className="rounded-2xl p-6"
+      style={{
+        background: 'rgba(255,255,255,0.022)',
+        border:     '1px solid rgba(255,255,255,0.062)',
+        backdropFilter: 'blur(12px)',
+      }}
+    >
+      <h3 className="text-base font-semibold mb-6 flex items-center gap-3">
+        <span
+          className="w-8 h-8 rounded-lg flex items-center justify-center text-sm"
+          style={{ background: iconBg, color: iconColor }}
+        >
+          <i className={iconClass} />
+        </span>
+        <span className="text-white">{label}</span>
+      </h3>
+      {skills.filter(s => s.category === category).map(skill => (
+        <SkillBar key={skill.id} skill={skill} />
+      ))}
+    </motion.div>
+  );
 
   return (
     <div className="pt-20">
-      {/* About Section */}
-      <section id="about" className="min-h-screen flex items-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <motion.h2 
-            className="text-4xl font-bold mb-12 gradient-text"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+      <section id="about" className="min-h-screen py-24 relative">
+        {/* Background radial */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(ellipse at 85% 50%,rgba(14,165,233,0.05) 0%,transparent 60%)',
+          }}
+        />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative">
+
+          {/* ── Section header ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 22 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.65 }}
+            className="mb-16"
           >
-            About Me
-          </motion.h2>
-
-          {/* Skills Section */}
-          <div className="grid md:grid-cols-2 gap-12 mb-16">
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+            <span className="section-label">About</span>
+            <h2
+              className="text-4xl md:text-5xl font-bold gradient-text mb-4"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
-              <h3 className="text-2xl font-semibold mb-8">Technical Skills</h3>
-              {skills.filter(s => s.category === 'frontend').map(skill => (
-                <SkillBar key={skill.id} skill={skill} />
-              ))}
-            </motion.div>
+              About Me
+            </h2>
+            <p className="text-gray-500 text-sm max-w-md">
+              My skills, experience, and educational journey.
+            </p>
+          </motion.div>
 
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-2xl font-semibold mb-8">Backend & Tools</h3>
-              {skills.filter(s => s.category === 'backend').map(skill => (
-                <SkillBar key={skill.id} skill={skill} />
-              ))}
-            </motion.div>
+          {/* ── Skills ── */}
+          <div className="grid md:grid-cols-2 gap-6 mb-24">
+            {skillSection('Frontend', 'frontend', 'fas fa-laptop-code', '#38bdf8', 'rgba(14,165,233,0.10)')}
+            {skillSection('Backend & Tools', 'backend', 'fas fa-server', '#a78bfa', 'rgba(139,92,246,0.10)')}
           </div>
 
-          {/* Experience */}
-          <motion.div 
+          {/* ── Experience ── */}
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-24"
           >
-            <h3 className="text-2xl font-semibold mb-8">Experience</h3>
-            <div className="space-y-6 mb-16">
+            <span className="section-label">Career</span>
+            <h3
+              className="text-2xl font-bold text-white mb-10"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              Experience
+            </h3>
+            <div className="max-w-2xl">
               {experience.map(exp => (
                 <ExperienceCard key={exp.id} experience={exp} />
               ))}
             </div>
           </motion.div>
 
-          {/* Education */}
-          <motion.div 
+          {/* ── Education ── */}
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl font-semibold mb-8">Education</h3>
-            <div className="grid md:grid-cols-2 gap-6">
+            <span className="section-label">Academic</span>
+            <h3
+              className="text-2xl font-bold text-white mb-10"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              Education
+            </h3>
+            <div className="grid md:grid-cols-2 gap-5">
               {education.map(edu => (
                 <EducationCard key={edu.id} education={edu} />
               ))}
